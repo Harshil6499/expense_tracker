@@ -1,9 +1,9 @@
-import 'package:expense_tracker/Views/Splash%20Screen/1st.dart';
 import 'package:flutter/material.dart';
-import 'Views/Splash Screen/OnboardingScreen.dart';
+import 'Views/Splash Screen/SplashScreen.dart';
+
 
 void main() {
-  runApp(MaterialApp(home: OnboardingScreens(),debugShowCheckedModeBanner: false,));
+   runApp(MaterialApp(home: OnBordingScreen(),debugShowCheckedModeBanner: false,));
 }
 
 

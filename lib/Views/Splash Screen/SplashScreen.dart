@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../LoginScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBordingScreen extends StatefulWidget {
   const OnBordingScreen({super.key});
@@ -17,9 +17,10 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: Center(
         child: Stack(
           children: [
+            buildBackground(),
             PageView(
               controller: _controller,
               onPageChanged: (index) {
@@ -27,6 +28,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                   currentIndex = index;
                 });
               },
+              // Page View Builder
               children: [
                 buildPage(
                   lottie: "assets/lottie/OnBording.json",
@@ -46,21 +48,17 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
               ],
             ),
 
+            // Skip Button
             Positioned(
-              top: 16,
-              right: 16,
+              top: 35,
+              right: 10,
               child: currentIndex != 2
                   ? TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const LoginScreen(),
-                    ),
-                  );
+                  navigateToLogin(context);
                 },
                 child: const Text(
-                  "Skip",
+                  "Skip >>",
                   style: TextStyle(
                     color: Colors.blue,
                     fontSize: 16,
@@ -71,6 +69,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                   : const SizedBox(),
             ),
 
+            // For Icons
             Positioned(
               bottom: 90,
               left: 0,
@@ -94,6 +93,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
               ),
             ),
 
+            //Next Button or Get Started
             Positioned(
               left: 20,
               right: 20,
@@ -112,7 +112,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                     }
                   },
                   child: Text(
-                    currentIndex == 2 ? "Get Started" : "Next",
+                    currentIndex == 2 ? "Get Started >>" : "Next >",
                   ),
                 ),
               ),
@@ -123,6 +123,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
     );
   }
 
+  //Page View Builder Widget
   Widget buildPage({
     String? lottie,
     IconData? icon,
@@ -138,7 +139,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
           if (lottie != null)
             Lottie.asset(
               lottie,
-              height: 250,
+              height: 200,
             )
           else if (icon != null)
             Icon(
@@ -147,10 +148,10 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
               color: Colors.blue,
             ),
 
-          const SizedBox(height: 30),
+          SizedBox(height: 30),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -159,12 +160,57 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),
     );
   }
+
+  Widget buildBackground() {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFBBDEFE),
+            Color(0xFFE3F2FD),
+            Color(0xFFF1F8E9),
+            Color(0xFFE8F5E1),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  //Shred Preferences for only 1 time OnBording Screen
+  Future<void> saveOnboardingDone() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_done', true);
+  }
+
+
+  //Disable back button after Skip / Get Started
+  void navigateToLogin(BuildContext context) async {
+    await saveOnboardingDone();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => LoginScreen(),
+        transitionsBuilder: (_, animation, __, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
+          (route) => false,
+    );
+  }
+
 }
 
 

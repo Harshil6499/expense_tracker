@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../ViewModels/User/User_ViewModel.dart';
+import 'package:expense_tracker/ViewModels/User/User_ViewModel.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});

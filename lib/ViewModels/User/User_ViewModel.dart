@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:expense_tracker/data/models/user_model.dart';
-import 'package:expense_tracker/data/repositories/user/user_repositorie.dart';
+import 'package:expense_tracker/Data/Models/User_Model.dart';
+import 'package:expense_tracker/Data/Repositories/User/User_Repositorie.dart';
 
 class UserViewModel extends ChangeNotifier {
   final UserRepo _repository = UserRepo();

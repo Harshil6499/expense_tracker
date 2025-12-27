@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../Admin/Admin_User_View.dart';
-import '../User/View_Profile.dart';
 
 class OnBordingScreen extends StatefulWidget {
   const OnBordingScreen({super.key});

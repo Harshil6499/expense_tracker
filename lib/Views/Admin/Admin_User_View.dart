@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import '../../ViewModels/Admin/Admin_User_ViewModel.dart';
+import 'package:expense_tracker/ViewModels/Admin/Admin_User_ViewModel.dart';
 
 class AdminUserListScreen extends StatefulWidget {
   const AdminUserListScreen({super.key});

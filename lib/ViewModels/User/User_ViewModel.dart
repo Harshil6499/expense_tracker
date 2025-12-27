@@ -1,6 +1,6 @@
-import 'package:expense_tracker/Data/Repositories/User/User_Repositorie.dart';
 import 'package:flutter/material.dart';
-import '../../../data/models/user_model.dart';
+import 'package:expense_tracker/data/models/user_model.dart';
+import 'package:expense_tracker/data/repositories/user/user_repositorie.dart';
 
 class UserViewModel extends ChangeNotifier {
   final UserRepo _repository = UserRepo();
@@ -14,7 +14,10 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      user = (await _repository.getMyProfile()) as UserModel?;
+      final json = await _repository.getMyProfile();
+      if (json != null) {
+        user = UserModel.fromJson(json as Map<String, dynamic>);
+      }
       error = '';
     } catch (e) {
       error = e.toString();

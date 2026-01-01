@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'api_endpoints.dart';
 
 class Api_Service {
 
@@ -35,6 +36,29 @@ class Api_Service {
       }
     } catch (e) {
       throw Exception('Failed to connect to the server');
+    }
+  }
+
+  //LogIn API Request
+  static Future<Map<String, dynamic>> login({
+    required String email,
+    required String password,
+  }) async {
+
+    final url = Uri.parse(ApiConstants.login);
+
+    final response = await http.post(
+      url,
+      body: {
+        'email': email,
+        'password': password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Login failed');
     }
   }
 }

@@ -6,7 +6,7 @@ class ApiConstants {
   //User API
   static const String View_User = "${Base_URl}ViewUsers.php";
   static const String Sign_Up= "${Base_URl}SignUp.php";
-  static const String Sign_In = "${Base_URl}SignIn.php";
+  //static const String Sign_In = "${Base_URl}SignIn.php";
   static const String Profile = "${Base_URl}Profile.php";
   static const String Profile_Update = "${Base_URl}ProfileUpdate.php";
   static const String Profile_Delete = "${Base_URl}ProfileDelete.php";
@@ -49,4 +49,7 @@ class ApiConstants {
   static const String Summary_Report = "${Base_URl}SummaryReport.php";
   static const String Summary_Report_Transaction = "${Base_URl}SummaryReportTransaction.php";
   static const String Monthly_Summary = "${Base_URl}MonthlySummary.php";
+
+  static const String login = "${Base_URl}SignIn.php";
+
 }

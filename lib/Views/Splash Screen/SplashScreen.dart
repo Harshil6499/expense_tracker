@@ -1,7 +1,8 @@
+import 'package:expense_tracker/Views/Access/Login_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Admin/Admin_User_View.dart';
+//import '../Admin/Admin_User_View.dart';
 
 class OnBordingScreen extends StatefulWidget {
   const OnBordingScreen({super.key});
@@ -199,7 +200,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => AdminUserListScreen(),
+        pageBuilder: (_, __, ___) => LoginScreen(),
         transitionsBuilder: (_, animation, __, child) {
           return FadeTransition(
             opacity: animation,

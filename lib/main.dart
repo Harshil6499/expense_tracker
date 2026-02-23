@@ -1,82 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// ViewModels
-import 'ViewModels/LogIn_ViewModel.dart';
-import 'ViewModels/User/User_ViewModel.dart';
-import 'ViewModels/Admin/Admin_User_ViewModel.dart';
-
-// Screens
-import 'Views/Access/Login_Screen.dart';
-import 'Views/Splash Screen/SplashScreen.dart';
-import 'Views/User/View_Profile.dart';
-import 'Views/Admin/Admin_User_View.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-
-  final bool onboardingDone = prefs.getBool('onboarding_done') ?? false;
-  final bool isLoggedIn = prefs.getBool('is_logged_in') ?? false;
-  final String userRole = prefs.getString('user_role') ?? '';
-
-  runApp(
-    MyApp(
-      onboardingDone: onboardingDone,
-      isLoggedIn: isLoggedIn,
-      userRole: userRole,
-    ),
-  );
+import 'package:expense_tracker/ViewModels/LogIn_ViewModel.dart';
+import 'package:expense_tracker/Views/Access/Login_Screen.dart';
+import 'package:expense_tracker/Views/Access/Home_Screen.dart';
+import 'package:expense_tracker/Views/Splash Screen/SplashScreen.dart';
+void main() {
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  final bool onboardingDone;
-  final bool isLoggedIn;
-  final String userRole;
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-  const MyApp({
-    super.key,
-    required this.onboardingDone,
-    required this.isLoggedIn,
-    required this.userRole,
-  });
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Widget? _startScreen;
+
+  @override
+  void initState() {
+    super.initState();
+    _decideStartScreen();
+  }
+
+  Future<void> _decideStartScreen() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    bool onboardingDone =
+        prefs.getBool('onboarding_done') ?? false;
+
+    bool isLoggedIn =
+        prefs.getBool('isLoggedIn') ?? false;
+
+    if (!onboardingDone) {
+      _startScreen = const OnBordingScreen();
+    } else if (isLoggedIn) {
+      _startScreen = const HomeScreen();
+    } else {
+      _startScreen = const LoginScreen();
+    }
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_startScreen == null) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => LoginViewModel()),
-        ChangeNotifierProvider(create: (_) => UserViewModel()),
-        ChangeNotifierProvider(create: (_) => AdminUserViewModel()),
+        ChangeNotifierProvider(
+          create: (_) => LoginViewModel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'My App',
-        home: _getStartScreen(),
-        routes: {
-          '/login': (_) => const LoginScreen(),
-          //'/userHome': (_) => const ViewUser(),
-          '/adminHome': (_) => const AdminUserListScreen(),
-          '/profile': (_) => const UserProfileScreen(),
-        },
+        home: _startScreen,
       ),
     );
-  }
-
-  Widget _getStartScreen() {
-    if (!onboardingDone) {
-      return const OnBordingScreen(); // First time only
-    }
-
-    if (!isLoggedIn) {
-      return const LoginScreen();
-    }
-
-    if (userRole == 'admin') {
-      return const AdminUserListScreen();
-    }
-
-    return const UserProfileScreen();
   }
 }

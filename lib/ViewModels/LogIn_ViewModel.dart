@@ -1,45 +1,63 @@
-import 'package:expense_tracker/Data/Repositories/LogIn_Repositorie.dart';
+import 'dart:convert';
+import 'package:expense_tracker/Core/Network/api_endpoints.dart';
 import 'package:flutter/material.dart';
-import '../Data/Models/Login_Model.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  final LogInRepo _authRepo = LogInRepo();
-  bool isLoading = false;
+  bool _isLoading = false;
+  String? _errorMessage;
 
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
 
-  Future<void> login({
-    required String email,
-    required String password,
-    required BuildContext context,
-  }) async {
-    isLoading = true;
-    notifyListeners();
-
-    try {
-      final LoginModel = await _authRepo.login(
-        email: email,
-        password: password,
-      );
-
-      if (LoginModel.status && LoginModel.user != null) {
-        if (LoginModel.user!.role == 'admin') {
-          Navigator.pushReplacementNamed(context, '/adminDashboard');
-        } else {
-          Navigator.pushReplacementNamed(context, '/userDashboard');
-        }
-      } else {
-        _showError(context, LoginModel.message);
-      }
-    } catch (e) {
-      _showError(context, e.toString());
-    }
-
-    isLoading = false;
+  void _setLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 
-  void _showError(BuildContext context, String msg) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg)));
+  void _setError(String? message) {
+    _errorMessage = message;
+    notifyListeners();
+  }
+
+  Future<bool> login(String email, String password) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final response = await http.post(
+        Uri.parse(ApiConstants.Sign_In),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 &&
+          data["status"] == "success") {
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool("isLoggedIn", true);
+
+        _setLoading(false);
+        return true;
+      } else {
+        _setError(data["message"] ?? "Login Failed");
+      }
+    } catch (e) {
+      _setError("Server Error. Please try again.");
+    }
+
+    _setLoading(false);
+    return false;
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 }

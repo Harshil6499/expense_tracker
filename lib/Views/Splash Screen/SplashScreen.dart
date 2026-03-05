@@ -2,6 +2,7 @@ import 'package:expense_tracker/Views/Access/Login_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:expense_tracker/assets/AppColors.dart';
 
 
 class OnBordingScreen extends StatefulWidget {
@@ -15,12 +16,10 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
   final PageController _controller = PageController();
   int currentIndex = 0;
 
-  static const primaryColor = Color(0xFF2E7D32);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FC),
+      backgroundColor: AppColors.BackGround,
       body: Stack(
         children: [
 
@@ -31,7 +30,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
             },
             children: [
               buildPage(
-                lottie: "assets/lottie/OnBording.json",
+                lottie: "lib/assets/lottie/SplashScreenLottie.json",
                 title: "Track Expenses",
                 subtitle: "Easily track your daily expenses",
               ),
@@ -57,7 +56,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                 child: const Text(
                   "Skip",
                   style: TextStyle(
-                    color: primaryColor,
+                    color: AppColors.Primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -72,7 +71,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
               height: 52,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
+                  backgroundColor: AppColors.Button,
                 ),
                 onPressed: () {
                   if (currentIndex == 2) {
@@ -86,6 +85,9 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
                 },
                 child: Text(
                   currentIndex == 2 ? "Get Started" : "Next",
+                  style: TextStyle(
+                    color: AppColors.BackGround,
+                  ),
                 ),
               ),
             ),
@@ -109,17 +111,17 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
           if (lottie != null)
             Lottie.asset(lottie, height: 220)
           else if (icon != null)
-            Icon(icon, size: 120, color: primaryColor),
+            Icon(icon, size: 120, color: AppColors.Primary),
           const SizedBox(height: 40),
           Text(title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 26, fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  fontSize: 26, color: AppColors.Title, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           Text(subtitle,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 16, color: Colors.grey.shade600)),
+                  fontSize: 16, color: AppColors.SubTitle)),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:expense_tracker/ViewModels/SignUp_ViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,6 +60,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(
           create: (_) => LoginViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SignUpViewModel(),
         ),
       ],
       child: MaterialApp(

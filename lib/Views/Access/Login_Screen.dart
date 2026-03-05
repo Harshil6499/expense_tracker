@@ -1,4 +1,6 @@
 import 'package:expense_tracker/Views/Access/Home_Screen.dart';
+import 'package:expense_tracker/Views/Access/SignUp_Screen.dart';
+import 'package:expense_tracker/assets/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:expense_tracker/ViewModels/LogIn_ViewModel.dart';
@@ -27,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginVM = context.watch<LoginViewModel>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FC),
+      backgroundColor: AppColors.BackGround,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -42,12 +44,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 80,
                   width: 80,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2E7D32),
+                    color: AppColors.Primary,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.account_balance_wallet_outlined,
-                    color: Colors.white,
+                    color: AppColors.BackGround,
                     size: 40,
                   ),
                 ),
@@ -56,13 +58,14 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 32),
 
               /// Title
-              const Center(
+               Center(
                 child: Column(
                   children: [
                     Text(
                       'Welcome Back',
                       style: TextStyle(
                         fontSize: 28,
+                        color: AppColors.Title,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -71,14 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Login to manage your expenses',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey,
+                        color: AppColors.SubTitle,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 32),
+               SizedBox(height: 32),
 
               /// Form
               Form(
@@ -97,8 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 16),
-
+                     SizedBox(height: 16),
                     _inputField(
                       controller: _passwordController,
                       label: 'Password',
@@ -128,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Center(
                     child: Text(
                       loginVM.errorMessage!,
-                      style: const TextStyle(color: Colors.red),
+                      style: TextStyle(color: AppColors.Message),
                     ),
                   ),
                 ),
@@ -141,7 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 52,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E7D32),
+                    backgroundColor: AppColors.Button,
+                    foregroundColor: AppColors.BackGround,
                   ),
                   onPressed: loginVM.isLoading
                       ? null
@@ -157,16 +160,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const HomeScreen(),
+                          builder: (_) =>  HomeScreen(),
                         ),
                       );
                     }
                   },
                   child: loginVM.isLoading
-                      ? const CircularProgressIndicator(
-                    color: Colors.white,
+                      ?  CircularProgressIndicator(
+                    color: AppColors.BackGround,
                   )
-                      : const Text("Login"),
+                      : Text("Login"),
                 ),
               ),
 
@@ -182,14 +185,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const HomeScreen(),
+                          builder: (_) => const SignupScreen(),
                         ),
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       "Sign Up",
                       style: TextStyle(
-                        color: Color(0xFF2E7D32),
+                        color: AppColors.Primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -204,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   'Secure & Private',
                   style: TextStyle(
-                    color: Colors.grey.shade600,
+                    color: AppColors.SubTitle,
                     fontSize: 12,
                   ),
                 ),

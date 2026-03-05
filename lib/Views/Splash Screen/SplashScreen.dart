@@ -30,7 +30,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
             },
             children: [
               buildPage(
-                lottie: "lib/assets/lottie/SplashScreenLottie.json",
+                lottie: "lib/assets/lottie/onbording.json",
                 title: "Track Expenses",
                 subtitle: "Easily track your daily expenses",
               ),
